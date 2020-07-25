@@ -1,0 +1,7 @@
+{
+  "$id": "http://schema.crowdaq.com/id_field.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Crowdaq ID field",
+  "type": "string",
+  "pattern": "^[a-zA-Z0-9_]+$"
+}

@@ -1,0 +1,67 @@
+{
+    "annotation_groups": [
+        {
+            "annotations": [
+                {
+                    "constraints": [
+                        {
+                            "description": "The quantity should only start with digits or letters.",
+                            "regex": "^[\\w\\d].*$",
+                            "type": "regex"
+                        },
+                        {
+                            "description": "The quantity should only end with digits, letters, or %.",
+                            "regex": "^.*[\\w\\d%]$",
+                            "type": "regex"
+                        },
+                        {
+                            "description": "The length of your selection should be within 1 and 30.",
+                            "regex": "^.{1,30}$",
+                            "type": "regex"
+                        }
+                    ],
+                    "from_context": "snippet",
+                    "id": "quantity",
+                    "prompt": "Select one quantity from below.",
+                    "type": "span-from-text"
+                },
+                {
+                    "id": "relevance",
+                    "options": {
+                        "A": "Relevant",
+                        "B": "Not relevant"
+                    },
+                    "prompt": "Is this quantity related to COVID-19?",
+                    "type": "multiple-choice"
+                }
+            ],
+            "id": "quantity_extraction_typing",
+            "max": 3,
+            "min": 1,
+            "repeated": true,
+            "title": "COVID-19 Quantities"
+        }
+    ],
+    "contexts": [
+        {
+            "html": "<p>Remember to ...</p>",
+            "id": "note",
+            "label": "Note",
+            "type": "html"
+        },
+        {
+            "hidden": false,
+            "id": "snippet",
+            "label": "The snippet was from an article published on 2020-05-20 10:30:00",
+            "text": "As of Tuesday, 144 of the state's then-294 deaths involved nursing homes or longterm care facilities.",
+            "type": "text"
+        },
+        {
+            "hidden": true,
+            "html": "<p>... The latest reported Norman death does not appear to have been connected to a Norman nursing home, since none of the local facilities have reported a death since May 5. <span style='color:red'>As of Tuesday , 144 of the state 's then-294 deaths involved nursing homes or longterm care facilities.</span> In Norman, Grace Living Center has reported 83 total cases among staff and residents and 10 deaths among residents...</p>",
+            "id": "doc",
+            "type": "html"
+        }
+    ],
+    "id": "example_taskitem"
+}

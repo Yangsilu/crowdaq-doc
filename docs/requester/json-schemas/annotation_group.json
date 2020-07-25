@@ -1,0 +1,35 @@
+{
+  "$id": "http://schema.crowdaq.com/annotation_group.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Crowdaq grouped Annotation items",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "http://schema.crowdaq.com/id_field.json#"
+    },
+    "title": {
+      "type": "string"
+    },
+    "repeated": {
+      "type": "boolean"
+    },
+    "min": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "max": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "annotations": {
+      "type": "array",
+      "items": {
+        "$ref": "http://schema.crowdaq.com/collector.json#"
+      }
+    }
+  },
+  "additionalItems": false,
+  "required": [
+    "id", "annotations"
+  ]
+}

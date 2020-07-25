@@ -1,0 +1,127 @@
+{
+  "$id": "http://schema.crowdaq.com/collector.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Crowdaq Annotation Condition",
+  "type": "object",
+  "definitions": {
+
+    "base-collector": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text",
+            "datetime",
+            "span-from-text",
+            "multiple-choice"
+          ]
+        },
+        "id": {
+          "$ref": "http://schema.crowdaq.com/id_field.json#"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "optional": {
+          "type": "boolean"
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "$ref": "http://schema.crowdaq.com/constraint.json#"
+          }
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "$ref": "http://schema.crowdaq.com/condition.json#"
+          }
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalItems": false
+    },
+
+    "text-collector": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "text"
+        },
+        "repeated": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalItems": false
+    },
+
+    "span-from-text-collector": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "span-from-text"
+        },
+        "from_context": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalItems": false
+    },
+    "multiple-choice-collector": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "multiple-choice"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalItems": false
+    },
+    "datetime-collector": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "datetime"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalItems": false
+    }
+  },
+  "allOf": [
+    {
+      "$ref":  "#/definitions/base-collector"
+    },
+    {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/text-collector"
+        },
+        {
+          "$ref":  "#/definitions/span-from-text-collector"
+        },
+        {
+          "$ref":  "#/definitions/multiple-choice-collector"
+        },
+        {
+          "$ref":  "#/definitions/datetime-collector"
+        }
+      ]
+    }
+  ]
+}

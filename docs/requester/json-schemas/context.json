@@ -1,0 +1,188 @@
+{
+  "$id": "http://schema.crowdaq.com/context.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Crowdaq Annotation Context",
+  "type": "object",
+  "definitions": {
+    "text-context": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "text"
+        },
+        "text": {
+          "type": "string"
+        },
+        "highlight": {
+          "type": "array",
+          "items": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "class": {
+                "type": "string",
+                "description": "A space separated class list."
+              },
+              "start": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "end": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "color": {
+                "type": "string",
+                "description": "Text color in hex.",
+                "pattern": "^#(([0-9a-fA-F]{2}){3}|([0-9a-fA-F]){3})$"
+              },
+              "background_color": {
+                "type": "string",
+                "description": "Background color in hex.",
+                "pattern": "^#(([0-9a-fA-F]{2}){3}|([0-9a-fA-F]){3})$"
+              }
+            },
+            "required": ["start", "end"]
+          }
+        }
+      },
+      "required": ["type", "text"],
+      "additionalItems": false
+    },
+    "image-context": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "image"
+        },
+        "src": {
+          "type": "string"
+        }
+      },
+      "additionalItems": false
+    },
+    "audio-context": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "audio"
+        },
+        "src": {
+          "type": "string"
+        }
+      },
+      "additionalItems": false
+    },
+    "video-context": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "video"
+        },
+        "src": {
+          "type": "string"
+        }
+      },
+      "additionalItems": false
+    },
+    "html-context": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "html"
+        },
+        "html": {
+          "type": "string"
+        }
+      },
+      "additionalItems": false
+    }
+  },
+  "allOf": [
+    {
+      "anyOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "text"
+              }
+            }
+          },
+          "then":{
+            "$ref": "#/definitions/text-context"
+          }
+
+        },
+        {
+          "if": {
+            "properties": {
+              "type":  {
+                "type": "string",
+                "const": "image"
+              }
+            }
+          },
+          "then": {
+            "$ref":  "#/definitions/image-context"
+          }
+
+        },
+        {
+          "if": {
+            "properties": {
+              "type":  {
+                "type": "string",
+                "const": "audio"
+              }
+            }
+          },
+          "then": {
+            "$ref":  "#/definitions/audio-context"
+          }
+
+        },
+        {
+          "if": {
+            "properties": {
+              "type":  {
+                "type": "string",
+                "const": "video"
+              }
+            }
+          },
+          "then": {
+            "$ref":  "#/definitions/video-context"
+          }
+
+        },
+        {
+          "if": {
+            "properties": {
+              "type":  {
+                "type": "string",
+                "const": "html"
+              }
+            }
+          },
+          "then": {
+            "$ref":  "#/definitions/html-context"
+          }
+
+        }
+      ]
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "text", "audio", "image", "html", "video"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "$id": "http://schema.crowdaq.com/exam.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Crowdaq Annotation Condition",
+  "type": "object",
+  "definitions": {
+
+  },
+  "properties": {
+    "instruction_id": {
+      "$ref": "http://schema.crowdaq.com/id_field.json#"
+    },
+    "tutorial_id": {
+      "$ref": "http://schema.crowdaq.com/id_field.json#"
+    },
+    "exam_id": {
+      "$ref": "http://schema.crowdaq.com/id_field.json#"
+    },
+    "question_set": {
+      "type": "array",
+      "items": {
+        "$ref": "http://schema.crowdaq.com/exam_question.json#"
+      }
+    }
+  },
+  "required": [
+    "question_set",
+    "exam_id"
+  ],
+  "additionalItems": false
+}

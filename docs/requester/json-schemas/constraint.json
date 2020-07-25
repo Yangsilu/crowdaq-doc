@@ -1,0 +1,25 @@
+{
+  "$id": "http://schema.crowdaq.com/constraint.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Crowdaq Annotation Condition",
+  "type": "object",
+  "definitions": {
+    "regex_constraints": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "regex"
+        },
+        "regex": {
+          "type": "string",
+          "description": "Regex Pattern"
+        }
+      }
+    }
+  },
+  "anyOf": [
+    {
+      "$ref": "#/definitions/regex_constraints"
+    }
+  ]
+}

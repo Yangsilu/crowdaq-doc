@@ -1,0 +1,656 @@
+{
+    "$id": "http://schema.crowdaq.com/schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Crowdaq Resource Schema",
+    "type": "object",
+    "definitions": {
+        "tutorial": {
+            "type": "object",
+            "properties": {
+                "instruction_id": {
+                    "$ref": "#/definitions/id_field"
+                },
+                "tutorial_id": {
+                    "$ref": "#/definitions/id_field"
+                },
+                "question_set": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/exam_question"
+                    }
+                }
+            },
+            "required": [
+                "question_set",
+                "tutorial_id"
+            ],
+            "additionalItems": false
+        },
+        "exam": {
+            "title": "Crowdaq Exam",
+            "type": "object",
+            "properties": {
+                "instruction_id": {
+                    "$ref": "#/definitions/id_field"
+                },
+                "tutorial_id": {
+                    "$ref": "#/definitions/id_field"
+                },
+                "exam_id": {
+                    "$ref": "#/definitions/id_field"
+                },
+                "question_set": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/exam_question"
+                    }
+                }
+            },
+            "required": [
+                "question_set",
+                "exam_id"
+            ],
+            "additionalItems": false
+        },
+        "exam_question": {
+            "title": "Crowdaq Exam/Tutorial Question Definition",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "multiple-choice"
+                    ]
+                },
+                "question_id": {
+                    "$ref": "#/definitions/id_field"
+                },
+                "answer": {
+                    "type": "string"
+                },
+                "explanation": {
+                    "type": "object"
+                },
+                "question": {
+                    "type": "object",
+                    "properties": {
+                        "context": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/context"
+                            }
+                        },
+                        "question_text": {
+                            "type": "string"
+                        },
+                        "options": {
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "options",
+                        "question_text"
+                    ],
+                    "additionalItems": false
+                }
+            },
+            "required": [
+                "type",
+                "question",
+                "answer"
+            ],
+            "additionalItems": false
+        },
+        "id_field": {
+            "title": "Crowdaq ID field",
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9_]+$"
+        },
+        "annotation_task": {
+            "title": "Crowdaq Annotation Condition",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "$ref": "#/definitions/id_field"
+                },
+                "contexts": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/context"
+                    }
+                },
+                "annotation_groups": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/annotation_group"
+                    }
+                },
+                "pre_submit_hook": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "additionalItems": false,
+            "required": [
+                "annotation_groups"
+            ]
+        },
+        "annotation_group": {
+            "title": "Crowdaq grouped Annotation items",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "$ref": "#/definitions/id_field"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "repeated": {
+                    "type": "boolean"
+                },
+                "min": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "max": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "annotations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/annotation-collector"
+                    }
+                }
+            },
+            "additionalItems": false,
+            "required": [
+                "id",
+                "annotations"
+            ]
+        },
+        "text-collector": {
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "text"
+                },
+                "repeated": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "additionalItems": false
+        },
+        "span-from-text-collector": {
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "span-from-text"
+                },
+                "from_context": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "additionalItems": false
+        },
+        "multiple-choice-collector": {
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "multiple-choice"
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "additionalItems": false
+        },
+        "datetime-collector": {
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "datetime"
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "additionalItems": false
+        },
+        "annotation-collector": {
+            "title": "Crowdaq Annotation Condition",
+            "type": "object",
+            "allOf": [
+                {
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "text",
+                                "datetime",
+                                "span-from-text",
+                                "multiple-choice"
+                            ]
+                        },
+                        "id": {
+                            "$ref": "#/definitions/id_field"
+                        },
+                        "prompt": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        },
+                        "optional": {
+                            "type": "boolean"
+                        },
+                        "constraints": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/constraint"
+                            }
+                        },
+                        "conditions": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/condition"
+                            }
+                        }
+                    },
+                    "required": [
+                        "id"
+                    ]
+                },
+                {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/text-collector"
+                        },
+                        {
+                            "$ref": "#/definitions/span-from-text-collector"
+                        },
+                        {
+                            "$ref": "#/definitions/multiple-choice-collector"
+                        },
+                        {
+                            "$ref": "#/definitions/datetime-collector"
+                        }
+                    ]
+                }
+            ]
+        },
+
+        "regex_constraints": {
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "regex"
+                },
+                "regex": {
+                    "type": "string",
+                    "description": "Regex Pattern"
+                }
+            }
+        },
+
+        "constraint": {
+            "title": "Crowdaq Annotation Constraint",
+            "type": "object",
+            "allOf": [
+                {
+                    "anyOf": [
+                        {
+                            "if": {
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "const": "regex"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "$ref": "#/definitions/regex_constraints"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "regex"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "text-context": {
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "text"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "highlight": {
+                    "type": "array",
+                    "items": {
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "class": {
+                                "type": "string",
+                                "description": "A space separated class list."
+                            },
+                            "start": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "end": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "color": {
+                                "type": "string",
+                                "description": "Text color in hex.",
+                                "pattern": "^#(([0-9a-fA-F]{2}){3}|([0-9a-fA-F]){3})$"
+                            },
+                            "background_color": {
+                                "type": "string",
+                                "description": "Background color in hex.",
+                                "pattern": "^#(([0-9a-fA-F]{2}){3}|([0-9a-fA-F]){3})$"
+                            }
+                        },
+                        "required": [
+                            "start",
+                            "end"
+                        ]
+                    }
+                }
+            },
+            "required": [
+                "type",
+                "text"
+            ],
+            "additionalItems": false
+        },
+        "image-context": {
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "image"
+                },
+                "src": {
+                    "type": "string"
+                }
+            },
+            "additionalItems": false
+        },
+        "audio-context": {
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "audio"
+                },
+                "src": {
+                    "type": "string"
+                }
+            },
+            "additionalItems": false
+        },
+        "video-context": {
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "video"
+                },
+                "src": {
+                    "type": "string"
+                }
+            },
+            "additionalItems": false
+        },
+        "html-context": {
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "const": "html"
+                },
+                "html": {
+                    "type": "string"
+                }
+            },
+            "additionalItems": false
+        },
+        "context": {
+            "title": "Crowdaq Annotation Context",
+            "type": "object",
+            "allOf": [
+                {
+                    "anyOf": [
+                        {
+                            "if": {
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "const": "text"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "$ref": "#/definitions/text-context"
+                            }
+                        },
+                        {
+                            "if": {
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "const": "image"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "$ref": "#/definitions/image-context"
+                            }
+                        },
+                        {
+                            "if": {
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "const": "audio"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "$ref": "#/definitions/audio-context"
+                            }
+                        },
+                        {
+                            "if": {
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "const": "video"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "$ref": "#/definitions/video-context"
+                            }
+                        },
+                        {
+                            "if": {
+                                "properties": {
+                                    "type": {
+                                        "type": "string",
+                                        "const": "html"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "$ref": "#/definitions/html-context"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": [
+                                "text",
+                                "audio",
+                                "image",
+                                "html",
+                                "video"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "eq_condition": {
+            "properties": {
+                "op": {
+                    "type": "string",
+                    "const": "eq"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "ID of the annotation collector whose value will be used to compare with the given value."
+                },
+                "value": {
+                    "type": "string"
+                }
+            },
+            "additionalItems": false
+        },
+        "and_condition": {
+            "properties": {
+                "op": {
+                    "type": "string",
+                    "const": "and"
+                },
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/condition"
+                    }
+                }
+            },
+            "additionalItems": false
+        },
+        "or_condition": {
+            "properties": {
+                "op": {
+                    "type": "string",
+                    "const": "or"
+                },
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/condition"
+                    }
+                }
+            }
+        },
+        "not_condition": {
+            "properties": {
+                "op": {
+                    "type": "string",
+                    "const": "not"
+                },
+                "arg": {
+                    "$ref": "#/definitions/condition"
+                }
+            },
+            "additionalItems": false
+        },
+        "condition": {
+            "title": "Crowdaq Annotation Condition",
+            "type": "object",
+            "description": "Logic Conditions",
+            "allOf": [
+                {
+                    "anyOf": [
+                        {
+                            "if": {
+                                "properties": {
+                                    "op": {
+                                        "type": "string",
+                                        "const": "or"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "$ref": "#/definitions/or_condition"
+                            }
+                        },
+                        {
+                            "if": {
+                                "properties": {
+                                    "op": {
+                                        "type": "string",
+                                        "const": "and"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "$ref": "#/definitions/and_condition"
+                            }
+                        },
+                        {
+                            "if": {
+                                "properties": {
+                                    "op": {
+                                        "type": "string",
+                                        "const": "not"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "$ref": "#/definitions/not_condition"
+                            }
+                        },
+                        {
+                            "if": {
+                                "properties": {
+                                    "op": {
+                                        "type": "string",
+                                        "const": "eq"
+                                    }
+                                }
+                            },
+                            "then": {
+                                "$ref": "#/definitions/eq_condition"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "properties": {
+                        "op": {
+                            "type":"string",
+                            "enum": ["and", "or", "not", "eq"]
+                        }
+                    }
+                }
+            ],
+            "additionalItems": false
+        }
+    }
+}

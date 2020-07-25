@@ -1,0 +1,132 @@
+{
+  "$id": "http://schema.crowdaq.com/condition.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Crowdaq Annotation Condition",
+  "type": "object",
+  "description": "Logic Conditions",
+
+  "definitions": {
+    "eq_condition": {
+      "properties": {
+        "op": {
+          "type": "string",
+          "const": "eq"
+        },
+        "id": {
+          "type": "string",
+          "description": "ID of the annotation collector whose value will be used to compare with the given value."
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "additionalItems": false
+    },
+
+    "and_condition": {
+      "properties": {
+        "op": {
+          "type": "string",
+          "const": "and"
+        },
+        "args": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/condition"
+          }
+        }
+      },
+      "additionalItems": false
+    },
+
+    "or_condition": {
+      "properties": {
+        "op": {
+          "type": "string",
+          "const": "or"
+        },
+        "args": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/condition"
+          }
+        }
+      }
+    },
+
+    "not_condition": {
+      "properties": {
+        "arg": {
+          "$ref": "#/definitions/condition"
+        }
+      },
+      "additionalItems": false
+    },
+
+    "condition": {
+      "anyOf": [
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "type": "string",
+                "const": "or"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/or_condition"
+          }
+        },
+
+        {
+          "if": {
+            "properties": {
+              "op":  {
+                "type": "string",
+                "const": "and"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/and_condition"
+          }
+        },
+
+        {
+          "if": {
+            "properties": {
+              "op":  {
+                "type": "string",
+                "const": "not"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/not_condition"
+          }
+        },
+
+        {
+          "if": {
+            "properties": {
+              "op":  {
+                "type": "string",
+                "const": "eq"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/definitions/eq_condition"
+          }
+        }
+      ],
+      "additionalItems": false
+    }
+  },
+  "anyOf": [
+    {
+      "$ref": "#/definitions/condition"
+    }
+  ]
+}

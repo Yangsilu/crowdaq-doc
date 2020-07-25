@@ -1,0 +1,54 @@
+{
+  "$id": "http://schema.crowdaq.com/exam_question.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Crowdaq Exam/Tutorial Question Definition",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "const": "multiple-choice"
+    },
+
+    "question_id": {
+      "$ref": "http://schema.crowdaq.com/id_field.json#"
+    },
+
+    "answer": {
+      "type": "string"
+    },
+
+    "explanation": {
+      "type": "object"
+    },
+
+    "question": {
+      "type": "object",
+      "properties": {
+        "context": {
+          "type": "array",
+          "items": {
+            "$ref": "http://schema.crowdaq.com/context.json#"
+          }
+        },
+        "question_text":{
+          "type": "string"
+        },
+        "options":{
+          "type": "object"
+        }
+      },
+      "required": [
+        "options",
+        "question_text"
+      ],
+      "additionalItems": false
+    }
+  },
+  "required": [
+    "type",
+    "question_id",
+    "question",
+    "answer"
+  ],
+  "additionalItems": false
+}
